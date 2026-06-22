@@ -409,6 +409,26 @@
       </form>
     </dialog>
 
+    <div id="emailReplyModalOverlay" class="stock-modal-overlay hidden" aria-hidden="true">
+      <div class="stock-modal email-reply-modal" role="dialog" aria-modal="true" aria-labelledby="emailReplyModalTitle">
+        <div class="stock-dialog-header">
+          <h4 id="emailReplyModalTitle">E-postaya Yanit Ver</h4>
+          <button type="button" id="closeEmailReplyDialog" class="btn outline">Kapat</button>
+        </div>
+        <div class="email-reply-body">
+          <div id="replyOriginalPreview" class="email-reply-original"></div>
+          <form id="emailReplyForm" class="stack">
+            <input type="hidden" id="replyToContactId" value="" />
+            <input type="hidden" id="replyToEmailId" value="" />
+            <input id="replyToInput" name="to" type="email" placeholder="Alici e-posta" required />
+            <input id="replySubjectInput" name="subject" placeholder="Konu" required />
+            <textarea id="replyMessageInput" name="message" placeholder="Yanitinizi yazin..." required minlength="5"></textarea>
+            <button class="btn" type="submit">Yaniti Gonder</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <div id="ordersModalOverlay" class="stock-modal-overlay hidden" aria-hidden="true">
       <div class="stock-modal orders-modal" role="dialog" aria-modal="true" aria-labelledby="ordersModalTitle">
         <div class="stock-dialog-header">

@@ -988,6 +988,53 @@ dialog {
   }
 }
 
+.email-reply-modal {
+  width: min(640px, 100%);
+}
+
+.email-reply-body {
+  padding: 12px 16px 16px;
+}
+
+.email-reply-original {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border: 1px solid #f3bfd8;
+  border-radius: 10px;
+  background: #fff9fc;
+  font-size: 0.9rem;
+  color: #4b5563;
+  white-space: pre-wrap;
+  max-height: 140px;
+  overflow: auto;
+}
+
+.email-status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-left: 6px;
+}
+
+.email-status-badge.new {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.email-status-badge.replied {
+  background: #d1fae5;
+  color: #047857;
+}
+
+.email-item-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
 .dialog-actions {
   display: flex;
   justify-content: end;

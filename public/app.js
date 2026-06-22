@@ -84,12 +84,23 @@ const el = {
   contactMapFrame: document.getElementById("contactMapFrame"),
   contactForm: document.getElementById("contactForm"),
   contactMessageList: document.getElementById("contactMessageList"),
+  emailReplyModalOverlay: document.getElementById("emailReplyModalOverlay"),
+  closeEmailReplyDialog: document.getElementById("closeEmailReplyDialog"),
+  emailReplyForm: document.getElementById("emailReplyForm"),
+  replyToContactId: document.getElementById("replyToContactId"),
+  replyToEmailId: document.getElementById("replyToEmailId"),
+  replyToInput: document.getElementById("replyToInput"),
+  replySubjectInput: document.getElementById("replySubjectInput"),
+  replyMessageInput: document.getElementById("replyMessageInput"),
+  replyOriginalPreview: document.getElementById("replyOriginalPreview"),
   toast: document.getElementById("toast")
 };
 
 let adminStockProducts = [];
 let adminStockCategories = [];
 let adminOrders = [];
+let adminContactMessages = [];
+let adminEmails = [];
 
 function toast(message) {
   el.toast.textContent = message;
@@ -928,6 +939,35 @@ async function loadForum() {
   }
 }
 
+function formatReplySubject(subject = "") {
+  const clean = String(subject).replace(/^\[Iletisim\]\s*/i, "").trim();
+  return clean.toLowerCase().startsWith("re:") ? clean : `Re: ${clean}`;
+}
+
+function openEmailReplyModal({ to, subject, originalMessage, replyToContactId = "", replyToEmailId = "" }) {
+  el.replyToContactId.value = replyToContactId;
+  el.replyToEmailId.value = replyToEmailId;
+  el.replyToInput.value = to || "";
+  el.replySubjectInput.value = formatReplySubject(subject);
+  el.replyMessageInput.value = "";
+  el.replyOriginalPreview.textContent = originalMessage
+    ? `Orijinal mesaj:\n${originalMessage}`
+    : "Orijinal mesaj bulunamadi.";
+  el.emailReplyModalOverlay.classList.remove("hidden");
+  el.emailReplyModalOverlay.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+
+function closeEmailReplyModal() {
+  el.emailReplyModalOverlay.classList.add("hidden");
+  el.emailReplyModalOverlay.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+  el.emailReplyForm?.reset();
+  el.replyToContactId.value = "";
+  el.replyToEmailId.value = "";
+  el.replyOriginalPreview.textContent = "";
+}
+
 function switchCustomerTab(tab) {
   document.querySelectorAll("[data-customer-tab]").forEach((b) => b.classList.remove("active"));
   document.querySelectorAll(".tab-content").forEach((c) => c.classList.remove("active"));
@@ -1121,6 +1161,8 @@ async function refreshAdminDashboard() {
   el.categoryList.innerHTML = db.categories.map((c) => `<div class="item">${trText(c.name)}</div>`).join("");
 
   adminOrders = db.orders || [];
+  adminContactMessages = db.contactMessages || [];
+  adminEmails = db.emails || [];
   const activeOrders = adminOrders.filter((o) => o.status !== "Iptal").length;
   const cancelledOrders = adminOrders.filter((o) => o.status === "Iptal").length;
   el.orderSummary.textContent = `${adminOrders.length} siparis (${activeOrders} aktif, ${cancelledOrders} iptal).`;
@@ -1128,28 +1170,43 @@ async function refreshAdminDashboard() {
     renderAdminOrdersModal(el.ordersSearchInput?.value || "");
   }
 
-  el.emailHistory.innerHTML = db.emails
-    .slice(0, 10)
-    .map((m) => {
-      const fromLine = m.from ? `<br />Gonderen: ${m.from}` : "";
-      return `<div class="item"><strong>${m.subject}</strong> -> ${m.to}${fromLine}</div>`;
-    })
-    .join("");
-
-  const contactMessages = db.contactMessages || [];
-  el.contactMessageList.innerHTML = contactMessages.length
-    ? contactMessages
+  el.emailHistory.innerHTML = adminEmails.length
+    ? adminEmails
         .slice(0, 15)
-        .map(
-          (m) => `
+        .map((m) => {
+          const isIncoming = m.type === "contact" && m.from;
+          const fromLine = m.from ? `<br />Gonderen: ${m.from}` : "";
+          const typeLine = m.type === "reply" ? `<br /><span class="hint">Yanit olarak gonderildi</span>` : "";
+          const replyBtn = isIncoming
+            ? `<div class="email-item-actions"><button type="button" class="btn outline" data-reply-email-id="${m.id}">Yanitla</button></div>`
+            : "";
+          return `<div class="item"><strong>${m.subject}</strong> -> ${m.to}${fromLine}${typeLine}<p>${m.message}</p><span class="hint">${formatForumDate(m.sentAt)}</span>${replyBtn}</div>`;
+        })
+        .join("")
+    : "<p class=\"hint\">E-posta gecmisi bos.</p>";
+
+  el.contactMessageList.innerHTML = adminContactMessages.length
+    ? adminContactMessages
+        .slice(0, 15)
+        .map((m) => {
+          const statusBadge =
+            m.status === "yanitlandi"
+              ? '<span class="email-status-badge replied">Yanitlandi</span>'
+              : '<span class="email-status-badge new">Yeni</span>';
+          const replyBtn =
+            m.status === "yanitlandi"
+              ? `<button type="button" class="btn outline" data-reply-contact-id="${m.id}">Tekrar Yanitla</button>`
+              : `<button type="button" class="btn" data-reply-contact-id="${m.id}">Yanitla</button>`;
+          return `
         <div class="item">
-          <strong>${m.name}</strong> - ${m.email}<br />
+          <strong>${m.name}</strong> - ${m.email} ${statusBadge}<br />
           <strong>Konu:</strong> ${m.subject}<br />
           <p>${m.message}</p>
           <span class="hint">${formatForumDate(m.createdAt)}</span>
+          <div class="email-item-actions">${replyBtn}</div>
         </div>
-      `
-        )
+      `;
+        })
         .join("")
     : "<p class=\"hint\">Henuz iletisim mesaji yok.</p>";
 
@@ -1664,15 +1721,6 @@ el.ordersModalList?.addEventListener("click", async (event) => {
   }
 });
 
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !el.stockModalOverlay?.classList.contains("hidden")) {
-    closeStockModal();
-  }
-  if (event.key === "Escape" && !el.ordersModalOverlay?.classList.contains("hidden")) {
-    closeOrdersModal();
-  }
-});
-
 el.stockSearchInput?.addEventListener("input", (event) => {
   renderStockModalList(event.target.value);
 });
@@ -1828,6 +1876,72 @@ document.getElementById("emailForm").addEventListener("submit", async (event) =>
     refreshAdminDashboard();
   } catch (error) {
     toast(error.message);
+  }
+});
+
+el.closeEmailReplyDialog?.addEventListener("click", closeEmailReplyModal);
+
+el.emailReplyModalOverlay?.addEventListener("click", (event) => {
+  if (event.target === el.emailReplyModalOverlay) closeEmailReplyModal();
+});
+
+el.emailReplyForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  try {
+    await api("/api/admin/email", {
+      method: "POST",
+      body: JSON.stringify({
+        to: el.replyToInput.value.trim(),
+        subject: el.replySubjectInput.value.trim(),
+        message: el.replyMessageInput.value.trim(),
+        replyToContactId: el.replyToContactId.value || undefined,
+        replyToEmailId: el.replyToEmailId.value || undefined
+      })
+    });
+    closeEmailReplyModal();
+    toast("E-posta yaniti gonderildi.");
+    refreshAdminDashboard();
+  } catch (error) {
+    toast(error.message);
+  }
+});
+
+document.addEventListener("click", (event) => {
+  const contactBtn = event.target.closest("[data-reply-contact-id]");
+  if (contactBtn) {
+    const message = adminContactMessages.find((m) => m.id === contactBtn.dataset.replyContactId);
+    if (!message) return;
+    openEmailReplyModal({
+      to: message.email,
+      subject: message.subject,
+      originalMessage: message.message,
+      replyToContactId: message.id
+    });
+    return;
+  }
+
+  const emailBtn = event.target.closest("[data-reply-email-id]");
+  if (emailBtn) {
+    const mail = adminEmails.find((m) => m.id === emailBtn.dataset.replyEmailId);
+    if (!mail || !mail.from) return;
+    openEmailReplyModal({
+      to: mail.from,
+      subject: mail.subject,
+      originalMessage: mail.message,
+      replyToEmailId: mail.id
+    });
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !el.stockModalOverlay?.classList.contains("hidden")) {
+    closeStockModal();
+  }
+  if (event.key === "Escape" && !el.ordersModalOverlay?.classList.contains("hidden")) {
+    closeOrdersModal();
+  }
+  if (event.key === "Escape" && !el.emailReplyModalOverlay?.classList.contains("hidden")) {
+    closeEmailReplyModal();
   }
 });
 

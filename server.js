@@ -838,16 +838,36 @@ async function handleApi(req, res) {
       return writeJson(res, 400, { error: "Alici, konu ve mesaj alanlari gerekli." });
     }
     const db = readDb();
+    const mailId = id("mail");
+    const isReply = Boolean(body.replyToContactId || body.replyToEmailId);
     db.emails.unshift({
-      id: id("mail"),
+      id: mailId,
       to: body.to,
       subject: body.subject,
       message: body.message,
       sentAt: new Date().toISOString(),
-      sentBy: auth.username
+      sentBy: auth.username,
+      type: isReply ? "reply" : "outgoing",
+      inReplyToContactId: body.replyToContactId || null,
+      inReplyToEmailId: body.replyToEmailId || null
     });
+
+    if (body.replyToContactId) {
+      const contact = db.contactMessages.find((c) => c.id === body.replyToContactId);
+      if (contact) {
+        contact.status = "yanitlandi";
+        contact.repliedAt = new Date().toISOString();
+        contact.replyEmailId = mailId;
+      }
+    }
+
+    if (body.replyToEmailId) {
+      const original = db.emails.find((e) => e.id === body.replyToEmailId);
+      if (original) original.repliedAt = new Date().toISOString();
+    }
+
     saveDb(db);
-    return writeJson(res, 200, { message: "E-posta islemi kaydedildi." });
+    return writeJson(res, 200, { message: "E-posta yaniti kaydedildi." });
   }
 
   if (req.method === "PUT" && pathname === "/api/admin/account") {
