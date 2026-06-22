@@ -3,7 +3,69 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Oranj Kozmetik</title>
+    <title id="seoTitle">Oranj Kozmetik | Saç Boyası ve Kozmetik Ürünleri Online Alışveriş</title>
+    <meta
+      id="seoDescription"
+      name="description"
+      content="Oranj Kozmetik ile profesyonel saç boyası, cilt bakımı ve makyaj ürünlerini güvenle sipariş edin. Oranj Kozmetik online mağazasında uygun fiyat ve hızlı kargo."
+    />
+    <meta
+      id="seoKeywords"
+      name="keywords"
+      content="oranj kozmetik, Oranj Kozmetik, saç boyası, kozmetik, online kozmetik, krem boya, amonyaksız boya"
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="author" content="Oranj Kozmetik" />
+    <meta name="theme-color" content="#be185d" />
+    <link rel="canonical" id="canonicalLink" href="https://oranj-kozmetik.onrender.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Oranj Kozmetik" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:title" id="ogTitle" content="Oranj Kozmetik | Saç Boyası ve Kozmetik Ürünleri" />
+    <meta
+      property="og:description"
+      id="ogDescription"
+      content="Oranj Kozmetik ile profesyonel saç boyası, cilt bakımı ve makyaj ürünlerini güvenle sipariş edin."
+    />
+    <meta property="og:url" id="ogUrl" content="https://oranj-kozmetik.onrender.com/" />
+    <meta property="og:image" id="ogImage" content="https://picsum.photos/seed/oranj-banner/1200/630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" id="twitterTitle" content="Oranj Kozmetik" />
+    <meta name="twitter:description" id="twitterDescription" content="Oranj Kozmetik online kozmetik mağazası" />
+    <script id="structuredData" type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "name": "Oranj Kozmetik",
+            "url": "https://oranj-kozmetik.onrender.com/",
+            "logo": "https://picsum.photos/seed/oranj-banner/200/200",
+            "description": "Oranj Kozmetik online kozmetik ve saç boyası mağazası"
+          },
+          {
+            "@type": "WebSite",
+            "name": "Oranj Kozmetik",
+            "url": "https://oranj-kozmetik.onrender.com/",
+            "inLanguage": "tr-TR",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://oranj-kozmetik.onrender.com/?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          },
+          {
+            "@type": "Store",
+            "name": "Oranj Kozmetik",
+            "url": "https://oranj-kozmetik.onrender.com/",
+            "image": "https://picsum.photos/seed/oranj-banner/1200/630",
+            "description": "Oranj Kozmetik saç boyası, cilt bakımı ve makyaj ürünleri satışı yapar.",
+            "priceRange": "₺₺"
+          }
+        ]
+      }
+    </script>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -240,6 +302,10 @@
               <input name="primaryColor" placeholder="#be185d" />
               <input name="accentColor" placeholder="#fb7185" />
               <input name="bannerImage" placeholder="Banner görsel URL" />
+              <input name="siteUrl" placeholder="https://oranj-kozmetik.onrender.com" />
+              <input name="seoTitle" placeholder="SEO baslik (Oranj Kozmetik...)" />
+              <textarea name="seoDescription" placeholder="SEO aciklama metni"></textarea>
+              <input name="seoKeywords" placeholder="oranj kozmetik, sac boyasi, kozmetik" />
               <button class="btn" type="submit">CMS Kaydet</button>
             </form>
           </article>
@@ -319,6 +385,18 @@
       </div>
     </div>
     <button id="backToTopBox" title="En üste çık">Yukarı</button>
+
+    <footer class="site-footer">
+      <h2>Oranj Kozmetik</h2>
+      <p id="seoFooterText">
+        <strong>Oranj Kozmetik</strong>, saç boyası, cilt bakımı ve makyaj kategorilerinde güvenilir online
+        alışveriş sunan bir kozmetik markasıdır. Oranj Kozmetik mağazasında kalıcı krem boya, amonyaksız boya ve
+        bitkisel doğal boya seçeneklerini keşfedin; uygun fiyat, hızlı kargo ve kolay sipariş takibi ile alışveriş
+        yapın.
+      </p>
+      <p class="hint">© <span id="seoYear"></span> Oranj Kozmetik. Tüm hakları saklıdır.</p>
+    </footer>
+
     <script src="app.js"></script>
   </body>
 </html>

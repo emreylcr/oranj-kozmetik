@@ -355,6 +355,77 @@ function applyCms(settings = {}) {
     el.heroSection.style.backgroundSize = "cover";
     el.heroSection.style.backgroundPosition = "center";
   }
+  applySeo(settings);
+}
+
+function applySeo(settings = {}) {
+  const siteUrl = (settings.siteUrl || window.location.origin || "https://oranj-kozmetik.onrender.com").replace(/\/$/, "");
+  const brand = trText(settings.siteTitle || "Oranj Kozmetik");
+  const title = settings.seoTitle || `${brand} | Sac Boyasi ve Kozmetik Urunleri Online Alisveris`;
+  const description =
+    settings.seoDescription ||
+    `${brand} ile profesyonel sac boyasi, cilt bakimi ve makyaj urunlerini guvenle siparis edin. ${brand} online magazasinda uygun fiyat ve hizli kargo.`;
+  const keywords = settings.seoKeywords || "oranj kozmetik, Oranj Kozmetik, sac boyasi, kozmetik, online kozmetik";
+  const image = settings.bannerImage || "https://picsum.photos/seed/oranj-banner/1200/630";
+
+  document.title = title;
+  const setMeta = (id, value, attr = "content") => {
+    const node = document.getElementById(id);
+    if (node) node.setAttribute(attr, value);
+  };
+
+  setMeta("seoTitle", title);
+  setMeta("seoDescription", description);
+  setMeta("seoKeywords", keywords);
+  setMeta("canonicalLink", `${siteUrl}/`, "href");
+  setMeta("ogTitle", title);
+  setMeta("ogDescription", description);
+  setMeta("ogUrl", `${siteUrl}/`);
+  setMeta("ogImage", image);
+  setMeta("twitterTitle", title);
+  setMeta("twitterDescription", description);
+
+  const structured = document.getElementById("structuredData");
+  if (structured) {
+    structured.textContent = JSON.stringify(
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            name: brand,
+            url: `${siteUrl}/`,
+            logo: image,
+            description
+          },
+          {
+            "@type": "WebSite",
+            name: brand,
+            url: `${siteUrl}/`,
+            inLanguage: "tr-TR",
+            potentialAction: {
+              "@type": "SearchAction",
+              target: `${siteUrl}/?q={search_term_string}`,
+              "query-input": "required name=search_term_string"
+            }
+          },
+          {
+            "@type": "Store",
+            name: brand,
+            url: `${siteUrl}/`,
+            image,
+            description,
+            priceRange: "₺₺"
+          }
+        ]
+      },
+      null,
+      2
+    );
+  }
+
+  const yearNode = document.getElementById("seoYear");
+  if (yearNode) yearNode.textContent = String(new Date().getFullYear());
 }
 
 function renderAnnouncementSlider() {
@@ -1728,7 +1799,11 @@ document.getElementById("cmsForm").addEventListener("submit", async (event) => {
         heroSubtitle: formData.get("heroSubtitle") || undefined,
         primaryColor: formData.get("primaryColor") || undefined,
         accentColor: formData.get("accentColor") || undefined,
-        bannerImage: formData.get("bannerImage") || undefined
+        bannerImage: formData.get("bannerImage") || undefined,
+        siteUrl: formData.get("siteUrl") || undefined,
+        seoTitle: formData.get("seoTitle") || undefined,
+        seoDescription: formData.get("seoDescription") || undefined,
+        seoKeywords: formData.get("seoKeywords") || undefined
       })
     });
     toast("CMS ayarlari guncellendi.");

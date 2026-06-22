@@ -777,6 +777,25 @@ dialog {
   margin-top: 10px;
 }
 
+.site-footer {
+  margin: 24px 16px 16px;
+  padding: 18px;
+  border: 1px solid #f3bfd8;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #fffafe 0%, #fff1f7 100%);
+}
+
+.site-footer h2 {
+  margin: 0 0 8px;
+  color: #be185d;
+}
+
+.site-footer p {
+  margin: 0 0 8px;
+  line-height: 1.55;
+  color: #4b5563;
+}
+
 .dialog-actions {
   display: flex;
   justify-content: end;

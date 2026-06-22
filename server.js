@@ -128,6 +128,11 @@ function seedData() {
       primaryColor: "#be185d",
       accentColor: "#fb7185",
       bannerImage: "https://picsum.photos/seed/oranj-banner/1200/400",
+      siteUrl: "https://oranj-kozmetik.onrender.com",
+      seoTitle: "Oranj Kozmetik | Saç Boyası ve Kozmetik Ürünleri Online Alışveriş",
+      seoDescription:
+        "Oranj Kozmetik ile profesyonel saç boyası, cilt bakımı ve makyaj ürünlerini güvenle sipariş edin. Oranj Kozmetik online mağazasında uygun fiyat ve hızlı kargo.",
+      seoKeywords: "oranj kozmetik, Oranj Kozmetik, saç boyası, kozmetik, online kozmetik, krem boya",
       updatedAt: new Date().toISOString()
     }
   };
@@ -340,10 +345,49 @@ function serveStatic(req, res) {
     ".html": "text/html; charset=utf-8",
     ".css": "text/css; charset=utf-8",
     ".js": "application/javascript; charset=utf-8",
-    ".json": "application/json; charset=utf-8"
+    ".json": "application/json; charset=utf-8",
+    ".xml": "application/xml; charset=utf-8",
+    ".txt": "text/plain; charset=utf-8"
   };
   res.writeHead(200, { "Content-Type": contentTypes[ext] || "text/plain; charset=utf-8" });
   fs.createReadStream(filePath).pipe(res);
+}
+
+function getSiteBaseUrl(req) {
+  const envUrl = process.env.SITE_URL || process.env.RENDER_EXTERNAL_URL;
+  if (envUrl) return envUrl.replace(/\/$/, "");
+  const host = req.headers.host || "oranj-kozmetik.onrender.com";
+  return `https://${host}`;
+}
+
+function serveSitemap(req, res) {
+  const db = readDb();
+  const base = getSiteBaseUrl(req);
+  const urls = [
+    { loc: `${base}/`, changefreq: "daily", priority: "1.0" },
+    { loc: `${base}/index.html`, changefreq: "daily", priority: "0.9" }
+  ];
+  for (const product of db.products.slice(0, 200)) {
+    urls.push({
+      loc: `${base}/product.html?id=${encodeURIComponent(product.id)}`,
+      changefreq: "weekly",
+      priority: "0.8"
+    });
+  }
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls
+  .map(
+    (item) => `  <url>
+    <loc>${item.loc}</loc>
+    <changefreq>${item.changefreq}</changefreq>
+    <priority>${item.priority}</priority>
+  </url>`
+  )
+  .join("\n")}
+</urlset>`;
+  res.writeHead(200, { "Content-Type": "application/xml; charset=utf-8" });
+  res.end(xml);
 }
 
 async function handleApi(req, res) {
@@ -773,6 +817,10 @@ async function handleApi(req, res) {
       primaryColor: body.primaryColor ?? db.cmsSettings.primaryColor,
       accentColor: body.accentColor ?? db.cmsSettings.accentColor,
       bannerImage: body.bannerImage ?? db.cmsSettings.bannerImage,
+      siteUrl: body.siteUrl ?? db.cmsSettings.siteUrl,
+      seoTitle: body.seoTitle ?? db.cmsSettings.seoTitle,
+      seoDescription: body.seoDescription ?? db.cmsSettings.seoDescription,
+      seoKeywords: body.seoKeywords ?? db.cmsSettings.seoKeywords,
       updatedAt: new Date().toISOString()
     };
     saveDb(db);
@@ -793,6 +841,9 @@ const server = http.createServer(async (req, res) => {
     const urlObj = new URL(req.url, `http://${req.headers.host || "localhost"}`);
     if (req.method === "GET" && urlObj.pathname === "/health") {
       return writeJson(res, 200, { status: "ok" });
+    }
+    if (req.method === "GET" && urlObj.pathname === "/sitemap.xml") {
+      return serveSitemap(req, res);
     }
     if (req.url.startsWith("/api/")) {
       await handleApi(req, res);
