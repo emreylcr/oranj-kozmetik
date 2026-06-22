@@ -347,7 +347,10 @@ function serveStatic(req, res) {
     ".js": "application/javascript; charset=utf-8",
     ".json": "application/json; charset=utf-8",
     ".xml": "application/xml; charset=utf-8",
-    ".txt": "text/plain; charset=utf-8"
+    ".txt": "text/plain; charset=utf-8",
+    ".png": "image/png",
+    ".ico": "image/x-icon",
+    ".webp": "image/webp"
   };
   res.writeHead(200, { "Content-Type": contentTypes[ext] || "text/plain; charset=utf-8" });
   fs.createReadStream(filePath).pipe(res);

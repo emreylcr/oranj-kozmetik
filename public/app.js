@@ -366,7 +366,7 @@ function applySeo(settings = {}) {
     settings.seoDescription ||
     `${brand} ile profesyonel sac boyasi, cilt bakimi ve makyaj urunlerini guvenle siparis edin. ${brand} online magazasinda uygun fiyat ve hizli kargo.`;
   const keywords = settings.seoKeywords || "oranj kozmetik, Oranj Kozmetik, sac boyasi, kozmetik, online kozmetik";
-  const image = settings.bannerImage || "https://picsum.photos/seed/oranj-banner/1200/630";
+  const image = settings.bannerImage || `${siteUrl}/logo.png`;
 
   document.title = title;
   const setMeta = (id, value, attr = "content") => {
