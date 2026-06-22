@@ -121,6 +121,7 @@ function seedData() {
     orders: [],
     emails: [],
     forumPosts: [],
+    contactMessages: [],
     cmsSettings: {
       siteTitle: "Oranj Kozmetik",
       heroTitle: "Güzelliğini Renklendir",
@@ -133,6 +134,14 @@ function seedData() {
       seoDescription:
         "Oranj Kozmetik ile profesyonel saç boyası, cilt bakımı ve makyaj ürünlerini güvenle sipariş edin. Oranj Kozmetik online mağazasında uygun fiyat ve hızlı kargo.",
       seoKeywords: "oranj kozmetik, Oranj Kozmetik, saç boyası, kozmetik, online kozmetik, krem boya",
+      contactInfo: {
+        email: "info@oranjkozmetik.com",
+        phone: "02126744846",
+        phoneDisplay: "0212 674 48 46",
+        address: "Fevzipaşa Mahallesi Söğüt Caddesi, No:36 İstanbul, 34586 Silivri",
+        mapsUrl:
+          "https://www.google.com/maps/search/?api=1&query=Fevzipaşa+Mahallesi+Söğüt+Caddesi+No+36+Silivri+İstanbul"
+      },
       updatedAt: new Date().toISOString()
     }
   };
@@ -142,8 +151,24 @@ function readDb() {
   ensureDb();
   const db = JSON.parse(fs.readFileSync(DB_PATH, "utf8"));
   if (!Array.isArray(db.forumPosts)) db.forumPosts = [];
+  if (!Array.isArray(db.contactMessages)) db.contactMessages = [];
+  if (!db.cmsSettings.contactInfo) {
+    db.cmsSettings.contactInfo = getContactInfo(db.cmsSettings);
+  }
   syncCancelledOrderStock(db);
   return db;
+}
+
+function getContactInfo(settings = {}) {
+  const defaults = {
+    email: "info@oranjkozmetik.com",
+    phone: "02126744846",
+    phoneDisplay: "0212 674 48 46",
+    address: "Fevzipaşa Mahallesi Söğüt Caddesi, No:36 İstanbul, 34586 Silivri",
+    mapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=Fevzipaşa+Mahallesi+Söğüt+Caddesi+No+36+Silivri+İstanbul"
+  };
+  return { ...defaults, ...(settings.contactInfo || {}) };
 }
 
 function saveDb(db) {
@@ -265,7 +290,8 @@ function sanitizeCustomerView(db) {
       ...a,
       inAnnouncementSlider: Boolean(a.inAnnouncementSlider ?? true)
     })),
-    cmsSettings: db.cmsSettings
+    cmsSettings: db.cmsSettings,
+    contactInfo: getContactInfo(db.cmsSettings)
   };
 }
 
@@ -559,6 +585,44 @@ async function handleApi(req, res) {
     db.forumPosts.unshift(post);
     saveDb(db);
     return writeJson(res, 201, { message: "Yorum paylasildi.", post });
+  }
+
+  if (req.method === "POST" && pathname === "/api/customer/contact") {
+    const body = await readBody(req);
+    const name = String(body.name || "").trim();
+    const email = String(body.email || "").trim();
+    const subject = String(body.subject || "").trim();
+    const message = String(body.message || "").trim();
+
+    if (!name || name.length < 2) return writeJson(res, 400, { error: "Ad soyad gerekli." });
+    if (!email || !email.includes("@")) return writeJson(res, 400, { error: "Gecerli e-posta gerekli." });
+    if (!subject || subject.length < 3) return writeJson(res, 400, { error: "Konu en az 3 karakter olmali." });
+    if (!message || message.length < 10) return writeJson(res, 400, { error: "Mesaj en az 10 karakter olmali." });
+
+    const db = readDb();
+    const contactInfo = getContactInfo(db.cmsSettings);
+    db.contactMessages.unshift({
+      id: id("cnt"),
+      name,
+      email,
+      subject,
+      message,
+      createdAt: new Date().toISOString(),
+      status: "yeni"
+    });
+    db.emails.unshift({
+      id: id("mail"),
+      to: contactInfo.email,
+      from: email,
+      fromName: name,
+      subject: `[Iletisim] ${subject}`,
+      message,
+      sentAt: new Date().toISOString(),
+      sentBy: name,
+      type: "contact"
+    });
+    saveDb(db);
+    return writeJson(res, 201, { message: "Mesajiniz alindi. En kisa surede size donus yapacagiz." });
   }
 
   if (req.method === "GET" && pathname.startsWith("/api/customer/track/")) {

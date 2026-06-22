@@ -126,6 +126,7 @@
           <button class="tab" data-customer-tab="tracking">Sipariş Takibi</button>
           <button class="tab" data-customer-tab="announcements">Duyurular</button>
           <button class="tab" data-customer-tab="forum">Forum</button>
+          <button class="tab" data-customer-tab="contact">İletişim</button>
           <button class="tab hidden" id="adminTabButton">Admin Paneline Geç</button>
         </div>
 
@@ -218,6 +219,58 @@
           <p id="forumNoPurchaseHint" class="hint hidden">Yorum yazmak icin once bir urun satin almalisiniz.</p>
           <div id="forumPostList" class="forum-post-list"></div>
         </div>
+
+        <div id="customerContact" class="tab-content">
+          <div class="contact-page">
+            <div class="contact-intro">
+              <h4>İletişim</h4>
+              <p class="hint">Sorularınız, önerileriniz veya destek talepleriniz için bize ulaşın.</p>
+            </div>
+            <div class="contact-grid">
+              <div class="contact-info-panel">
+                <article class="contact-card">
+                  <span class="contact-icon" aria-hidden="true">📞</span>
+                  <h5>Telefon</h5>
+                  <a id="contactPhoneLink" class="contact-link" href="tel:+902126744846">0212 674 48 46</a>
+                </article>
+                <article class="contact-card">
+                  <span class="contact-icon" aria-hidden="true">✉️</span>
+                  <h5>E-posta</h5>
+                  <a id="contactEmailLink" class="contact-link" href="mailto:info@oranjkozmetik.com">info@oranjkozmetik.com</a>
+                </article>
+                <article class="contact-card">
+                  <span class="contact-icon" aria-hidden="true">📍</span>
+                  <h5>Adres</h5>
+                  <p id="contactAddressText" class="contact-text">
+                    Fevzipaşa Mahallesi Söğüt Caddesi, No:36 İstanbul, 34586 Silivri
+                  </p>
+                  <a id="contactMapsLink" class="btn outline contact-map-btn" href="#" target="_blank" rel="noopener noreferrer">
+                    Haritada Aç
+                  </a>
+                </article>
+                <div class="contact-map-wrap">
+                  <iframe
+                    id="contactMapFrame"
+                    title="Oranj Kozmetik konum haritasi"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    src="https://maps.google.com/maps?q=Fevzipaşa+Mahallesi+Söğüt+Caddesi+No+36+Silivri+İstanbul&output=embed"
+                  ></iframe>
+                </div>
+              </div>
+              <div class="contact-form-panel">
+                <h5>Bize E-posta Gönderin</h5>
+                <form id="contactForm" class="stack contact-form">
+                  <input id="contactName" name="name" placeholder="Adınız Soyadınız" required minlength="2" />
+                  <input id="contactEmail" name="email" type="email" placeholder="E-posta adresiniz" required />
+                  <input id="contactSubject" name="subject" placeholder="Konu" required minlength="3" />
+                  <textarea id="contactMessage" name="message" placeholder="Mesajınız..." required minlength="10"></textarea>
+                  <button class="btn" type="submit">Mesajı Gönder</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section id="adminPanel" class="panel hidden">
@@ -283,6 +336,8 @@
               <button class="btn" type="submit">E-posta Gönder</button>
             </form>
             <div id="emailHistory"></div>
+            <h5 class="contact-admin-title">Gelen Iletisim Mesajlari</h5>
+            <div id="contactMessageList"></div>
           </article>
 
           <article class="card">

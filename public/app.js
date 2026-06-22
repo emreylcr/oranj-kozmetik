@@ -77,6 +77,13 @@ const el = {
   forumLoginHint: document.getElementById("forumLoginHint"),
   forumNoPurchaseHint: document.getElementById("forumNoPurchaseHint"),
   forumPostList: document.getElementById("forumPostList"),
+  contactPhoneLink: document.getElementById("contactPhoneLink"),
+  contactEmailLink: document.getElementById("contactEmailLink"),
+  contactAddressText: document.getElementById("contactAddressText"),
+  contactMapsLink: document.getElementById("contactMapsLink"),
+  contactMapFrame: document.getElementById("contactMapFrame"),
+  contactForm: document.getElementById("contactForm"),
+  contactMessageList: document.getElementById("contactMessageList"),
   toast: document.getElementById("toast")
 };
 
@@ -356,6 +363,40 @@ function applyCms(settings = {}) {
     el.heroSection.style.backgroundPosition = "center";
   }
   applySeo(settings);
+}
+
+function formatPhoneTel(phone = "") {
+  const digits = String(phone).replace(/\D/g, "");
+  if (digits.startsWith("90")) return `+${digits}`;
+  if (digits.startsWith("0")) return `+90${digits.slice(1)}`;
+  return `+90${digits}`;
+}
+
+function applyContactInfo(contactInfo = {}) {
+  const email = contactInfo.email || "info@oranjkozmetik.com";
+  const phone = contactInfo.phone || "02126744846";
+  const phoneDisplay = contactInfo.phoneDisplay || "0212 674 48 46";
+  const address =
+    contactInfo.address || "Fevzipaşa Mahallesi Söğüt Caddesi, No:36 İstanbul, 34586 Silivri";
+  const mapsUrl =
+    contactInfo.mapsUrl ||
+    "https://www.google.com/maps/search/?api=1&query=Fevzipaşa+Mahallesi+Söğüt+Caddesi+No+36+Silivri+İstanbul";
+
+  if (el.contactPhoneLink) {
+    el.contactPhoneLink.href = `tel:${formatPhoneTel(phone)}`;
+    el.contactPhoneLink.textContent = phoneDisplay;
+  }
+  if (el.contactEmailLink) {
+    el.contactEmailLink.href = `mailto:${email}`;
+    el.contactEmailLink.textContent = email;
+  }
+  if (el.contactAddressText) el.contactAddressText.textContent = address;
+  if (el.contactMapsLink) {
+    el.contactMapsLink.href = mapsUrl;
+  }
+  if (el.contactMapFrame) {
+    el.contactMapFrame.src = `https://maps.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
+  }
 }
 
 function applySeo(settings = {}) {
@@ -902,6 +943,7 @@ function switchCustomerTab(tab) {
     document.getElementById("customerForum").classList.add("active");
     loadForum();
   }
+  if (tab === "contact") document.getElementById("customerContact").classList.add("active");
 }
 
 function fillCategorySelect() {
@@ -997,6 +1039,7 @@ async function loadCustomerContent() {
   const content = await api("/api/customer/content");
   state.content = content;
   applyCms(content.cmsSettings);
+  applyContactInfo(content.contactInfo);
   renderAnnouncementSlider();
   renderDiscountSlider();
   renderProducts();
@@ -1087,8 +1130,28 @@ async function refreshAdminDashboard() {
 
   el.emailHistory.innerHTML = db.emails
     .slice(0, 10)
-    .map((m) => `<div class="item"><strong>${m.subject}</strong> -> ${m.to}</div>`)
+    .map((m) => {
+      const fromLine = m.from ? `<br />Gonderen: ${m.from}` : "";
+      return `<div class="item"><strong>${m.subject}</strong> -> ${m.to}${fromLine}</div>`;
+    })
     .join("");
+
+  const contactMessages = db.contactMessages || [];
+  el.contactMessageList.innerHTML = contactMessages.length
+    ? contactMessages
+        .slice(0, 15)
+        .map(
+          (m) => `
+        <div class="item">
+          <strong>${m.name}</strong> - ${m.email}<br />
+          <strong>Konu:</strong> ${m.subject}<br />
+          <p>${m.message}</p>
+          <span class="hint">${formatForumDate(m.createdAt)}</span>
+        </div>
+      `
+        )
+        .join("")
+    : "<p class=\"hint\">Henuz iletisim mesaji yok.</p>";
 
   el.adminAnnouncements.innerHTML = db.announcements
     .map(
@@ -1329,6 +1392,26 @@ el.forumForm?.addEventListener("submit", async (event) => {
     setForumRating(0);
     toast("Yorumunuz paylasildi.");
     await loadForum();
+  } catch (error) {
+    toast(error.message);
+  }
+});
+
+el.contactForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const formData = new FormData(event.target);
+  try {
+    const result = await api("/api/customer/contact", {
+      method: "POST",
+      body: JSON.stringify({
+        name: formData.get("name"),
+        email: formData.get("email"),
+        subject: formData.get("subject"),
+        message: formData.get("message")
+      })
+    });
+    event.target.reset();
+    toast(result.message || "Mesajiniz gonderildi.");
   } catch (error) {
     toast(error.message);
   }
@@ -1861,7 +1944,7 @@ async function init() {
     });
   }
   const initialTab = new URLSearchParams(window.location.search).get("tab");
-  if (["products", "cart", "tracking", "announcements", "forum"].includes(initialTab)) {
+  if (["products", "cart", "tracking", "announcements", "forum", "contact"].includes(initialTab)) {
     switchCustomerTab(initialTab);
   }
   if (state.user) {

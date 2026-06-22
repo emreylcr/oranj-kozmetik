@@ -900,6 +900,7 @@
     }
   ],
   "emails": [],
+  "contactMessages": [],
   "forumPosts": [
     {
       "id": "frm-58ce56a24b",
@@ -923,6 +924,13 @@
     "seoTitle": "Oranj Kozmetik | Sac Boyasi ve Kozmetik Urunleri Online Alisveris",
     "seoDescription": "Oranj Kozmetik ile profesyonel sac boyasi, cilt bakimi ve makyaj urunlerini guvenle siparis edin. Oranj Kozmetik online magazasinda uygun fiyat ve hizli kargo.",
     "seoKeywords": "oranj kozmetik, Oranj Kozmetik, sac boyasi, kozmetik, online kozmetik, krem boya",
+    "contactInfo": {
+      "email": "info@oranjkozmetik.com",
+      "phone": "02126744846",
+      "phoneDisplay": "0212 674 48 46",
+      "address": "Fevzipaşa Mahallesi Söğüt Caddesi, No:36 İstanbul, 34586 Silivri",
+      "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Fevzipaşa+Mahallesi+Söğüt+Caddesi+No+36+Silivri+İstanbul"
+    },
     "updatedAt": "2026-06-08T15:44:30.249Z"
   }
 }
