@@ -137,11 +137,50 @@ function readDb() {
   ensureDb();
   const db = JSON.parse(fs.readFileSync(DB_PATH, "utf8"));
   if (!Array.isArray(db.forumPosts)) db.forumPosts = [];
+  syncCancelledOrderStock(db);
   return db;
 }
 
 function saveDb(db) {
   fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2), "utf8");
+}
+
+function restoreOrderStock(db, order) {
+  if (order.stockRestored) return;
+  for (const item of order.items || []) {
+    const product = db.products.find((p) => p.id === item.productId);
+    if (product) product.stock += Number(item.quantity) || 0;
+  }
+  order.stockRestored = true;
+}
+
+function deductOrderStock(db, order) {
+  if (!order.stockRestored) return;
+  for (const item of order.items || []) {
+    const product = db.products.find((p) => p.id === item.productId);
+    if (!product) continue;
+    const qty = Number(item.quantity) || 0;
+    if (product.stock < qty) {
+      throw new Error(`${product.name} icin yeterli stok yok.`);
+    }
+    product.stock -= qty;
+  }
+  order.stockRestored = false;
+}
+
+function syncCancelledOrderStock(db) {
+  let changed = false;
+  for (const order of db.orders || []) {
+    if (order.stockRestored === undefined) {
+      order.stockRestored = false;
+      changed = true;
+    }
+    if (order.status === "Iptal" && !order.stockRestored) {
+      restoreOrderStock(db, order);
+      changed = true;
+    }
+  }
+  if (changed) saveDb(db);
 }
 
 function getAuth(req) {
@@ -407,6 +446,7 @@ async function handleApi(req, res) {
       invoiceAddress: String(body.invoiceAddress).trim(),
       payment: paymentValidation.paymentInfo,
       status: "Hazirlaniyor",
+      stockRestored: false,
       trackingCode: `TRK${Date.now().toString().slice(-8)}`,
       createdAt: new Date().toISOString()
     };
@@ -617,7 +657,18 @@ async function handleApi(req, res) {
     const db = readDb();
     const order = db.orders.find((o) => o.id === orderId);
     if (!order) return writeJson(res, 404, { error: "Siparis bulunamadi." });
-    order.status = body.status || order.status;
+    const newStatus = body.status || order.status;
+    const oldStatus = order.status;
+    if (newStatus === "Iptal" && oldStatus !== "Iptal") {
+      restoreOrderStock(db, order);
+    } else if (oldStatus === "Iptal" && newStatus !== "Iptal") {
+      try {
+        deductOrderStock(db, order);
+      } catch (error) {
+        return writeJson(res, 400, { error: error.message });
+      }
+    }
+    order.status = newStatus;
     saveDb(db);
     return writeJson(res, 200, { message: "Siparis durumu guncellendi." });
   }

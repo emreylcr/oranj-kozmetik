@@ -709,6 +709,74 @@ dialog {
   color: #d1d5db;
 }
 
+.orders-modal-list {
+  margin: 12px 16px 16px;
+  overflow: auto;
+  max-height: calc(88vh - 130px);
+  display: grid;
+  gap: 12px;
+}
+
+.order-detail-card {
+  border: 1px solid #f3bfd8;
+  border-radius: 10px;
+  padding: 12px;
+  background: #fff;
+}
+
+.order-detail-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.order-status-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: #fce7f3;
+  color: #9d174d;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.order-detail-meta,
+.order-detail-address,
+.order-detail-payment {
+  margin: 6px 0;
+  font-size: 0.92rem;
+  color: #4b5563;
+}
+
+.order-detail-card h5 {
+  margin: 10px 0 6px;
+}
+
+.order-items-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.order-items-list li {
+  margin-bottom: 4px;
+}
+
+.order-detail-total {
+  margin-top: 8px;
+  font-size: 1rem;
+}
+
+.order-status-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 10px;
+}
+
 .dialog-actions {
   display: flex;
   justify-content: end;

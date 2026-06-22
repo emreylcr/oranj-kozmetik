@@ -38,7 +38,12 @@ const el = {
   userList: document.getElementById("userList"),
   adminProductList: document.getElementById("adminProductList"),
   categoryList: document.getElementById("categoryList"),
-  orderList: document.getElementById("orderList"),
+  orderSummary: document.getElementById("orderSummary"),
+  openOrdersModalBtn: document.getElementById("openOrdersModalBtn"),
+  ordersModalOverlay: document.getElementById("ordersModalOverlay"),
+  closeOrdersDialog: document.getElementById("closeOrdersDialog"),
+  ordersSearchInput: document.getElementById("ordersSearchInput"),
+  ordersModalList: document.getElementById("ordersModalList"),
   emailHistory: document.getElementById("emailHistory"),
   adminAnnouncements: document.getElementById("adminAnnouncements"),
   myOrders: document.getElementById("myOrders"),
@@ -77,6 +82,7 @@ const el = {
 
 let adminStockProducts = [];
 let adminStockCategories = [];
+let adminOrders = [];
 
 function toast(message) {
   el.toast.textContent = message;
@@ -640,33 +646,87 @@ function renderAnnouncements() {
     .join("");
 }
 
+function formatPaymentMethod(method) {
+  const labels = {
+    kapida_odeme: "Kapida Odeme",
+    banka_karti: "Banka Karti",
+    kredi_karti: "Kredi Karti"
+  };
+  return labels[method] || method || "-";
+}
+
+function renderOrderItemsList(items = []) {
+  if (!items.length) return '<p class="hint">Urun bilgisi yok.</p>';
+  return `
+    <ul class="order-items-list">
+      ${items
+        .map(
+          (item) => `
+        <li>
+          <strong>${trText(item.name)}</strong>
+          — ${item.quantity} adet x ${formatTl(item.unitPrice)} = ${formatTl((Number(item.quantity) || 0) * (Number(item.unitPrice) || 0))}
+        </li>
+      `
+        )
+        .join("")}
+    </ul>
+  `;
+}
+
+function renderOrderDetailCard(order, options = {}) {
+  const { showCustomer = false, showStatusControls = false } = options;
+  const payment = order.payment || {};
+  const paymentExtra =
+    payment.method === "banka_karti" || payment.method === "kredi_karti"
+      ? `<br />Kart: ${payment.maskedCardNumber || "-"} | SKT: ${payment.expiry || "-"} | ${payment.cardHolder || ""}`
+      : "";
+
+  return `
+    <article class="order-detail-card">
+      <div class="order-detail-head">
+        <strong>${order.orderNumber || order.id}</strong>
+        <span class="order-status-badge">${order.status}</span>
+      </div>
+      <p class="order-detail-meta">
+        ${showCustomer ? `Musteri: <strong>${order.customerUsername}</strong><br />` : ""}
+        Tarih: ${formatForumDate(order.createdAt)}<br />
+        Takip Kodu: ${order.trackingCode || "-"}
+      </p>
+      <h5>Siparis Icerigi</h5>
+      ${renderOrderItemsList(order.items)}
+      <p class="order-detail-total"><strong>Toplam:</strong> ${formatTl(order.totalPrice)}</p>
+      <p class="order-detail-address"><strong>Teslimat:</strong> ${trText(order.shippingAddress || "-")}</p>
+      <p class="order-detail-address"><strong>Fatura:</strong> ${trText(order.invoiceAddress || "-")}</p>
+      <p class="order-detail-payment"><strong>Odeme:</strong> ${formatPaymentMethod(payment.method)}${paymentExtra}</p>
+      ${
+        showStatusControls
+          ? `
+        <div class="order-status-row">
+          <label>Durum:</label>
+          <select data-order-status="${order.id}">
+            ${["Hazirlaniyor", "Kargoda", "Teslim Edildi", "Iptal"]
+              .map((s) => `<option ${order.status === s ? "selected" : ""}>${s}</option>`)
+              .join("")}
+          </select>
+          <button class="btn outline" data-save-order="${order.id}">Durumu Kaydet</button>
+        </div>
+      `
+          : ""
+      }
+    </article>
+  `;
+}
+
 function renderCustomerOrders(orders) {
   if (!orders.length) {
     el.myOrders.innerHTML = "<p>Henüz siparişiniz yok.</p>";
     return;
   }
-  el.myOrders.innerHTML = orders
-    .map(
-      (o) => `
-      <div class="item">
-        <strong>Sipariş No:</strong> ${o.orderNumber || o.id}<br />
-        Durum: ${o.status} - Takip Kodu: ${o.trackingCode}<br />
-        Tutar: ${formatTl(o.totalPrice)}
-      </div>
-    `
-    )
-    .join("");
+  el.myOrders.innerHTML = orders.map((o) => renderOrderDetailCard(o)).join("");
 }
 
 function showTrackingResult(order) {
-  el.trackingResult.innerHTML = `
-    <div class="item">
-      <strong>Sipariş No:</strong> ${order.orderNumber || order.id}<br />
-      <strong>Durum:</strong> ${order.status}<br />
-      <strong>Takip Kodu:</strong> ${order.trackingCode}<br />
-      <strong>Tutar:</strong> ${formatTl(order.totalPrice)}
-    </div>
-  `;
+  el.trackingResult.innerHTML = renderOrderDetailCard(order);
 }
 
 function formatForumDate(value) {
@@ -946,22 +1006,13 @@ async function refreshAdminDashboard() {
 
   el.categoryList.innerHTML = db.categories.map((c) => `<div class="item">${trText(c.name)}</div>`).join("");
 
-  el.orderList.innerHTML = db.orders
-    .map(
-      (o) => `
-      <div class="item">
-        <strong>${o.orderNumber || o.id}</strong> - ${o.customerUsername} - ${formatTl(o.totalPrice)}<br />
-        Durum:
-        <select data-order-status="${o.id}">
-          ${["Hazirlaniyor", "Kargoda", "Teslim Edildi", "Iptal"]
-            .map((s) => `<option ${o.status === s ? "selected" : ""}>${s}</option>`)
-            .join("")}
-        </select>
-        <button class="btn outline" data-save-order="${o.id}">Kaydet</button>
-      </div>
-    `
-    )
-    .join("");
+  adminOrders = db.orders || [];
+  const activeOrders = adminOrders.filter((o) => o.status !== "Iptal").length;
+  const cancelledOrders = adminOrders.filter((o) => o.status === "Iptal").length;
+  el.orderSummary.textContent = `${adminOrders.length} siparis (${activeOrders} aktif, ${cancelledOrders} iptal).`;
+  if (!el.ordersModalOverlay?.classList.contains("hidden")) {
+    renderAdminOrdersModal(el.ordersSearchInput?.value || "");
+  }
 
   el.emailHistory.innerHTML = db.emails
     .slice(0, 10)
@@ -1051,6 +1102,35 @@ function renderStockModalList(searchTerm = "") {
   `;
 }
 
+function renderAdminOrdersModal(searchTerm = "") {
+  if (!el.ordersModalList) return;
+  const term = searchTerm.trim().toLowerCase();
+  const orders = adminOrders.filter((order) => {
+    if (!term) return true;
+    const haystack = [
+      order.orderNumber,
+      order.id,
+      order.customerUsername,
+      order.trackingCode,
+      order.status,
+      ...(order.items || []).map((item) => item.name)
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+    return haystack.includes(term);
+  });
+
+  if (!orders.length) {
+    el.ordersModalList.innerHTML = '<p class="hint">Siparis bulunamadi.</p>';
+    return;
+  }
+
+  el.ordersModalList.innerHTML = orders
+    .map((order) => renderOrderDetailCard(order, { showCustomer: true, showStatusControls: true }))
+    .join("");
+}
+
 function bindAdminDynamicActions() {
   document.querySelectorAll("[data-del-user]").forEach((btn) => {
     btn.addEventListener("click", async () => {
@@ -1071,22 +1151,6 @@ function bindAdminDynamicActions() {
         toast("Urun kaldirildi.");
         refreshAdminDashboard();
         loadCustomerContent();
-      } catch (error) {
-        toast(error.message);
-      }
-    });
-  });
-
-  document.querySelectorAll("[data-save-order]").forEach((btn) => {
-    btn.addEventListener("click", async () => {
-      const select = document.querySelector(`[data-order-status="${btn.dataset.saveOrder}"]`);
-      try {
-        await api(`/api/admin/orders/${btn.dataset.saveOrder}`, {
-          method: "PUT",
-          body: JSON.stringify({ status: select.value })
-        });
-        toast("Siparis durumu guncellendi.");
-        refreshAdminDashboard();
       } catch (error) {
         toast(error.message);
       }
@@ -1401,9 +1465,57 @@ el.stockModalOverlay?.addEventListener("click", (event) => {
   if (event.target === el.stockModalOverlay) closeStockModal();
 });
 
+function openOrdersModal() {
+  renderAdminOrdersModal("");
+  el.ordersSearchInput.value = "";
+  el.ordersModalOverlay.classList.remove("hidden");
+  el.ordersModalOverlay.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+
+function closeOrdersModal() {
+  el.ordersModalOverlay.classList.add("hidden");
+  el.ordersModalOverlay.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+  el.ordersModalList.innerHTML = "";
+}
+
+el.openOrdersModalBtn?.addEventListener("click", openOrdersModal);
+
+el.closeOrdersDialog?.addEventListener("click", closeOrdersModal);
+
+el.ordersModalOverlay?.addEventListener("click", (event) => {
+  if (event.target === el.ordersModalOverlay) closeOrdersModal();
+});
+
+el.ordersSearchInput?.addEventListener("input", (event) => {
+  renderAdminOrdersModal(event.target.value);
+});
+
+el.ordersModalList?.addEventListener("click", async (event) => {
+  const btn = event.target.closest("[data-save-order]");
+  if (!btn) return;
+  const select = el.ordersModalList.querySelector(`[data-order-status="${btn.dataset.saveOrder}"]`);
+  if (!select) return;
+  try {
+    await api(`/api/admin/orders/${btn.dataset.saveOrder}`, {
+      method: "PUT",
+      body: JSON.stringify({ status: select.value })
+    });
+    toast(select.value === "Iptal" ? "Siparis iptal edildi, stoklar guncellendi." : "Siparis durumu guncellendi.");
+    await refreshAdminDashboard();
+    loadCustomerContent();
+  } catch (error) {
+    toast(error.message);
+  }
+});
+
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && !el.stockModalOverlay?.classList.contains("hidden")) {
     closeStockModal();
+  }
+  if (event.key === "Escape" && !el.ordersModalOverlay?.classList.contains("hidden")) {
+    closeOrdersModal();
   }
 });
 
