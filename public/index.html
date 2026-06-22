@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oranj Kozmetik</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1 id="siteTitle">Oranj Kozmetik</h1>
+      <div class="header-right">
+        <div class="quick-cart">
+          <button id="quickCartBtn" class="btn outline">Sepet (<span id="quickCartCount">0</span>)</button>
+          <div id="quickCartPanel" class="quick-cart-panel hidden"></div>
+        </div>
+        <div class="auth-actions">
+          <button id="showLoginBtn" class="btn">Giriş</button>
+          <button id="showRegisterBtn" class="btn outline">Kayıt Ol</button>
+          <button id="logoutBtn" class="btn danger hidden">Çıkış</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="hero" id="heroSection">
+      <div class="hero-content">
+        <h2 id="heroTitle">Güzelliğini Renklendir</h2>
+        <p id="heroSubtitle"></p>
+      </div>
+    </section>
+
+    <section class="discount-slider-wrap">
+      <div class="split-slider-grid">
+        <div class="discount-slider">
+          <h4 class="slider-title">Kayan Duyurular</h4>
+          <div id="announcementSlider"></div>
+        </div>
+        <div class="discount-slider">
+          <h4 class="slider-title">İndirimli Ürünler</h4>
+          <div id="discountSlider"></div>
+        </div>
+      </div>
+    </section>
+
+    <main class="layout">
+      <section id="customerPanel" class="panel">
+        <h3>Müşteri Paneli</h3>
+
+        <div class="tabs">
+          <button class="tab active" data-customer-tab="products">Ürün Keşfi</button>
+          <button class="tab" data-customer-tab="cart">Sepetim</button>
+          <button class="tab" data-customer-tab="tracking">Sipariş Takibi</button>
+          <button class="tab" data-customer-tab="announcements">Duyurular</button>
+          <button class="tab" data-customer-tab="forum">Forum</button>
+          <button class="tab hidden" id="adminTabButton">Admin Paneline Geç</button>
+        </div>
+
+        <div id="customerProducts" class="tab-content active">
+          <div class="product-search-row">
+            <input
+              id="productSearchInput"
+              type="text"
+              placeholder="Ürün adı veya boya kodu ile ara (ör. 7.0, Kalıcı)"
+            />
+          </div>
+          <div id="productGrid" class="grid"></div>
+        </div>
+
+        <div id="customerCart" class="tab-content">
+          <h4>Sepetim</h4>
+          <div id="cartItems"></div>
+          <div class="cart-footer">
+            <p>Toplam: <strong id="cartTotal">0 TL</strong></p>
+            <button id="goPaymentBtn" class="btn">Ödeme Ekranına Geç</button>
+            <button id="clearCartBtn" class="btn danger">Sepeti Toplu Sil</button>
+            <p class="hint">Ödeme adımına geçmek için yukarıdaki butonu kullanın.</p>
+          </div>
+        </div>
+
+        <div id="customerPayment" class="tab-content">
+          <div class="payment-panel-header">
+            <h4>Ödeme Bilgileri</h4>
+            <button type="button" id="backToCartBtn" class="btn outline">Sepete Dön</button>
+          </div>
+          <form id="paymentForm" class="stack">
+            <select id="paymentMethod" required>
+              <option value="kapida_odeme">Kapıda Ödeme</option>
+              <option value="banka_karti">Banka Kartı</option>
+              <option value="kredi_karti">Kredi Kartı</option>
+            </select>
+
+            <div id="cardFields" class="stack hidden">
+              <input id="cardHolder" placeholder="Kart üzerindeki ad soyad (Örnek: Ayşe Yılmaz)" inputmode="text" autocomplete="cc-name" />
+              <input id="cardNumber" placeholder="Kart no (Örnek: 4546 1234 5678 9012)" maxlength="19" inputmode="numeric" autocomplete="cc-number" />
+              <div class="two-cols">
+                <input id="cardExpiry" placeholder="SKT (AA/YY) Örnek: 12/29" maxlength="5" inputmode="numeric" autocomplete="cc-exp" />
+                <input id="cardCvv" placeholder="CVV (Ornek: 123)" maxlength="3" inputmode="numeric" autocomplete="cc-csc" />
+              </div>
+            </div>
+
+            <textarea id="shippingAddress" placeholder="Teslimat adresi (kargo adresi)" required></textarea>
+            <textarea id="invoiceAddress" placeholder="Fatura adresi" required></textarea>
+            <button id="checkoutBtn" class="btn" type="submit">Ödemeyi Tamamla ve Sipariş Ver</button>
+          </form>
+          <div id="lastOrderInfo"></div>
+        </div>
+
+        <div id="customerTracking" class="tab-content">
+          <h4>Sipariş Takibi</h4>
+          <form id="trackOrderForm" class="stack">
+            <input id="orderSearchInput" placeholder="Sipariş no girin (Örnek: SIP-20260608-123456)" required />
+            <button class="btn" type="submit">Siparişi Sorgula</button>
+          </form>
+          <div id="trackingResult"></div>
+          <h4>Siparişlerim</h4>
+          <div id="myOrders"></div>
+        </div>
+
+        <div id="customerAnnouncements" class="tab-content">
+          <div id="announcementList"></div>
+        </div>
+
+        <div id="customerForum" class="tab-content">
+          <h4>Forum</h4>
+          <p class="hint">Satin aldiginiz urunler hakkinda yorum paylasin ve puanlayin.</p>
+          <div id="forumFormWrap" class="forum-form-wrap hidden">
+            <form id="forumForm" class="stack">
+              <label for="forumProductSelect">Aldiginiz urun</label>
+              <select id="forumProductSelect" required></select>
+              <label>Puaniniz (1-5 yildiz)</label>
+              <div id="forumStarRating" class="star-rating" data-rating="0" aria-label="Urun puani">
+                <button type="button" class="star-btn" data-star="1" aria-label="1 yildiz">★</button>
+                <button type="button" class="star-btn" data-star="2" aria-label="2 yildiz">★</button>
+                <button type="button" class="star-btn" data-star="3" aria-label="3 yildiz">★</button>
+                <button type="button" class="star-btn" data-star="4" aria-label="4 yildiz">★</button>
+                <button type="button" class="star-btn" data-star="5" aria-label="5 yildiz">★</button>
+              </div>
+              <input type="hidden" id="forumRatingInput" name="rating" value="0" />
+              <textarea id="forumCommentInput" placeholder="Yorumunuzu yazin..." required minlength="3"></textarea>
+              <button class="btn" type="submit">Yorumu Paylas</button>
+            </form>
+          </div>
+          <p id="forumLoginHint" class="hint hidden">Yorum yazmak icin giris yapin.</p>
+          <p id="forumNoPurchaseHint" class="hint hidden">Yorum yazmak icin once bir urun satin almalisiniz.</p>
+          <div id="forumPostList" class="forum-post-list"></div>
+        </div>
+      </section>
+
+      <section id="adminPanel" class="panel hidden">
+        <h3>Admin Paneli</h3>
+        <p class="hint">
+          Buradan kullanıcı, ürün, stok, kategori, sipariş, duyuru, e-posta, hesap ve CMS ayarları
+          yönetilir.
+        </p>
+
+        <div class="admin-grid">
+          <article class="card">
+            <h4>Kullanıcı Ekle / Sil</h4>
+            <form id="addUserForm" class="stack">
+              <input name="username" placeholder="Kullanıcı adı" required />
+              <input name="email" placeholder="E-posta" required />
+              <input name="password" placeholder="Şifre" required />
+              <select name="role">
+                <option value="customer">Müşteri</option>
+                <option value="admin">Admin</option>
+              </select>
+              <button class="btn" type="submit">Kullanıcı Ekle</button>
+            </form>
+            <div id="userList"></div>
+          </article>
+
+          <article class="card">
+            <h4>Ürün/İçerik Yükle-Kaldır</h4>
+            <form id="addProductForm" class="stack">
+              <input name="name" placeholder="Ürün adı" required />
+              <textarea name="description" placeholder="Açıklama"></textarea>
+              <input name="price" type="number" placeholder="Fiyat" required />
+              <input name="stock" type="number" placeholder="Stok" required />
+              <select name="categoryId" id="productCategorySelect"></select>
+              <input name="imageUrl" placeholder="Görsel URL (opsiyonel)" />
+              <button class="btn" type="submit">Ürün Ekle</button>
+            </form>
+            <div id="adminProductList"></div>
+          </article>
+
+          <article class="card">
+            <h4>Stok, Kategori ve Sipariş Yönetimi</h4>
+            <div class="stock-summary-row">
+              <p id="stockSummary" class="hint"></p>
+              <button type="button" id="openStockModalBtn" class="btn">Stoktaki Ürünler</button>
+            </div>
+            <form id="addCategoryForm" class="stack">
+              <input name="name" placeholder="Yeni kategori" required />
+              <button class="btn outline" type="submit">Kategori Ekle</button>
+            </form>
+            <div id="categoryList"></div>
+            <div id="orderList"></div>
+          </article>
+
+          <article class="card">
+            <h4>E-posta Gönderme</h4>
+            <form id="emailForm" class="stack">
+              <input name="to" placeholder="Alıcı e-posta" required />
+              <input name="subject" placeholder="Konu" required />
+              <textarea name="message" placeholder="Mesaj" required></textarea>
+              <button class="btn" type="submit">E-posta Gönder</button>
+            </form>
+            <div id="emailHistory"></div>
+          </article>
+
+          <article class="card">
+            <h4>Duyuru Ekle / Kaldır</h4>
+            <form id="announcementForm" class="stack">
+              <input name="title" placeholder="Duyuru başlığı" required />
+              <textarea name="content" placeholder="Duyuru içeriği" required></textarea>
+              <button class="btn" type="submit">Duyuru Ekle</button>
+            </form>
+            <div id="adminAnnouncements"></div>
+          </article>
+
+          <article class="card">
+            <h4>Kullanıcı Adı / Şifre Değiştirme</h4>
+            <form id="accountForm" class="stack">
+              <input name="username" placeholder="Yeni kullanıcı adı" />
+              <input name="email" placeholder="Yeni e-posta" />
+              <input name="password" placeholder="Yeni şifre" />
+              <button class="btn" type="submit">Hesabı Güncelle</button>
+            </form>
+          </article>
+
+          <article class="card">
+            <h4>CMS ile Tasarım Ayarları</h4>
+            <form id="cmsForm" class="stack">
+              <input name="siteTitle" placeholder="Site başlığı" />
+              <input name="heroTitle" placeholder="Hero başlık" />
+              <textarea name="heroSubtitle" placeholder="Hero açıklama"></textarea>
+              <input name="primaryColor" placeholder="#be185d" />
+              <input name="accentColor" placeholder="#fb7185" />
+              <input name="bannerImage" placeholder="Banner görsel URL" />
+              <button class="btn" type="submit">CMS Kaydet</button>
+            </form>
+          </article>
+
+          <article class="card">
+            <h4>İndirimli Kayan Ürün Yönetimi</h4>
+            <form id="discountForm" class="stack">
+              <select id="discountProductId" required></select>
+              <input id="discountOldPrice" type="text" placeholder="Eski fiyat (otomatik)" readonly />
+              <input id="discountNewPrice" type="number" step="0.01" min="1" placeholder="Yeni fiyat" required />
+              <label class="checkbox-line">
+                <input id="discountInSlider" type="checkbox" checked />
+                Kayan indirim alanında göster
+              </label>
+              <button class="btn" type="submit">İndirimi Kaydet</button>
+            </form>
+            <div id="discountList"></div>
+          </article>
+        </div>
+
+        <button id="backToCustomerBtn" class="btn outline">Müşteri Paneline Dön</button>
+      </section>
+    </main>
+
+    <dialog id="loginDialog">
+      <form id="loginForm" method="dialog" class="stack">
+        <h4>Giriş Yap</h4>
+        <input name="username" placeholder="Kullanıcı adı" required />
+        <input name="password" placeholder="Şifre" required />
+        <menu class="dialog-actions">
+          <button value="cancel" class="btn outline" type="button" id="closeLogin">İptal</button>
+          <button value="default" class="btn" type="submit">Giriş</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <div id="stockModalOverlay" class="stock-modal-overlay hidden" aria-hidden="true">
+      <div class="stock-modal" role="dialog" aria-modal="true" aria-labelledby="stockModalTitle">
+        <div class="stock-dialog-header">
+          <h4 id="stockModalTitle">Stoktaki Ürünler</h4>
+          <button type="button" id="closeStockDialog" class="btn outline">Kapat</button>
+        </div>
+        <input id="stockSearchInput" type="text" placeholder="Ürün adı veya boya kodu ile ara..." />
+        <div id="stockModalList" class="stock-table-wrap"></div>
+      </div>
+    </div>
+
+    <dialog id="registerDialog">
+      <form id="registerForm" method="dialog" class="stack">
+        <h4>Kayıt Ol</h4>
+        <input name="username" placeholder="Kullanıcı adı" required />
+        <input name="email" placeholder="E-posta" required />
+        <input name="password" placeholder="Şifre" required />
+        <menu class="dialog-actions">
+          <button value="cancel" class="btn outline" type="button" id="closeRegister">İptal</button>
+          <button value="default" class="btn" type="submit">Kayıt</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast hidden"></div>
+    <div id="productBottomSheet" class="product-bottom-sheet hidden">
+      <div class="product-bottom-sheet-inner">
+        <button id="closeProductSheetBtn" class="btn outline">Kapat</button>
+        <div id="productSheetContent"></div>
+      </div>
+    </div>
+    <button id="backToTopBox" title="En üste çık">Yukarı</button>
+    <script src="app.js"></script>
+  </body>
+</html>

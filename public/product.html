@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ürün Detayı - Oranj Kozmetik</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1 id="siteTitle">Oranj Kozmetik</h1>
+      <div class="header-right">
+        <div class="quick-cart">
+          <button id="quickCartBtn" class="btn outline">Sepet (<span id="quickCartCount">0</span>)</button>
+          <div id="quickCartPanel" class="quick-cart-panel hidden"></div>
+        </div>
+        <a class="btn" href="index.html">Ana Sayfa</a>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel">
+        <button class="btn outline" onclick="history.back()">← Geri</button>
+        <div id="productDetail" class="product-detail-wrap"></div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast hidden"></div>
+    <script src="product.js"></script>
+  </body>
+</html>

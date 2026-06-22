@@ -1,0 +1,924 @@
+{
+  "users": [
+    {
+      "id": "usr-admin",
+      "username": "admin",
+      "password": "admin123",
+      "email": "admin@oranjkozmetik.com",
+      "role": "admin",
+      "createdAt": "2026-06-08T15:44:30.248Z"
+    },
+    {
+      "id": "usr-82bbf82168",
+      "username": "koll",
+      "password": "4555",
+      "email": "kol",
+      "role": "customer",
+      "createdAt": "2026-06-08T15:46:58.686Z"
+    },
+    {
+      "id": "usr-7b5cb07ee6",
+      "username": "murat",
+      "password": "göttenverdimyardımedin",
+      "email": "suvhsfgfh@gmail.com",
+      "role": "customer",
+      "createdAt": "2026-06-19T18:19:07.897Z"
+    },
+    {
+      "id": "usr-43a9b184fe",
+      "username": "semih",
+      "password": "1234",
+      "email": "semih@gmail.com",
+      "role": "customer",
+      "createdAt": "2026-06-22T14:00:36.656Z"
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat-hair-dye",
+      "name": "Sac Boyasi"
+    },
+    {
+      "id": "cat-skin-care",
+      "name": "Cilt Bakimi"
+    },
+    {
+      "id": "cat-makeup",
+      "name": "Makyaj"
+    }
+  ],
+  "products": [
+    {
+      "id": "prd-1",
+      "name": "Oranj Kalici Krem Boya 1.0",
+      "description": "1.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 165,
+      "stock": 3,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "1.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "1.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-0-0/700/500",
+      "oldPrice": 165,
+      "discountPrice": 145,
+      "inDiscountSlider": true
+    },
+    {
+      "id": "prd-2",
+      "name": "Oranj Kalici Krem Boya 2.0",
+      "description": "2.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 171,
+      "stock": 11,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "2.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "2.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-0-1/700/500"
+    },
+    {
+      "id": "prd-3",
+      "name": "Oranj Kalici Krem Boya 3.0",
+      "description": "3.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 177,
+      "stock": 14,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "3.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "3.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-0-2/700/500"
+    },
+    {
+      "id": "prd-4",
+      "name": "Oranj Kalici Krem Boya 4.0",
+      "description": "4.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 183,
+      "stock": 15,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "4.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "4.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-0-3/700/500"
+    },
+    {
+      "id": "prd-5",
+      "name": "Oranj Kalici Krem Boya 5.0",
+      "description": "5.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 189,
+      "stock": 18,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "5.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "5.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-0-4/700/500"
+    },
+    {
+      "id": "prd-6",
+      "name": "Oranj Kalici Krem Boya 6.0",
+      "description": "6.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 195,
+      "stock": 19,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "6.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "6.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-0-5/700/500"
+    },
+    {
+      "id": "prd-7",
+      "name": "Oranj Kalici Krem Boya 7.0",
+      "description": "7.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 201,
+      "stock": 300,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "7.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "7.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-0-6/700/500"
+    },
+    {
+      "id": "prd-8",
+      "name": "Oranj Kalici Krem Boya 8.0",
+      "description": "8.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 207,
+      "stock": 21,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "8.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "8.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-0-7/700/500",
+      "oldPrice": 207,
+      "discountPrice": 156,
+      "inDiscountSlider": true
+    },
+    {
+      "id": "prd-9",
+      "name": "Oranj Kalici Krem Boya 9.0",
+      "description": "9.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 213,
+      "stock": 21,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "9.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "9.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-0-8/700/500"
+    },
+    {
+      "id": "prd-10",
+      "name": "Oranj Kalici Krem Boya 10.0",
+      "description": "10.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 219,
+      "stock": 22,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "10.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "10.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-0-9/700/500"
+    },
+    {
+      "id": "prd-11",
+      "name": "Oranj Amonyaksiz Boya 1.0",
+      "description": "1.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 50,
+      "stock": 14,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "1.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "1.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-1-0/700/500"
+    },
+    {
+      "id": "prd-12",
+      "name": "Oranj Amonyaksiz Boya 2.0",
+      "description": "2.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 189,
+      "stock": 15,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "2.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "2.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-1-1/700/500"
+    },
+    {
+      "id": "prd-13",
+      "name": "Oranj Amonyaksiz Boya 3.0",
+      "description": "3.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 195,
+      "stock": 16,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "3.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "3.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-1-2/700/500"
+    },
+    {
+      "id": "prd-14",
+      "name": "Oranj Amonyaksiz Boya 4.0",
+      "description": "4.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 201,
+      "stock": 17,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "4.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "4.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-1-3/700/500"
+    },
+    {
+      "id": "prd-15",
+      "name": "Oranj Amonyaksiz Boya 5.0",
+      "description": "5.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 207,
+      "stock": 18,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "5.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "5.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-1-4/700/500"
+    },
+    {
+      "id": "prd-16",
+      "name": "Oranj Amonyaksiz Boya 6.0",
+      "description": "6.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 213,
+      "stock": 19,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "6.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "6.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-1-5/700/500",
+      "oldPrice": 213,
+      "discountPrice": 10,
+      "inDiscountSlider": true
+    },
+    {
+      "id": "prd-17",
+      "name": "Oranj Amonyaksiz Boya 7.0",
+      "description": "7.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 219,
+      "stock": 20,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "7.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "7.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-1-6/700/500"
+    },
+    {
+      "id": "prd-18",
+      "name": "Oranj Amonyaksiz Boya 8.0",
+      "description": "8.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 225,
+      "stock": 21,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "8.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "8.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-1-7/700/500",
+      "oldPrice": 225,
+      "discountPrice": 169.9,
+      "inDiscountSlider": true
+    },
+    {
+      "id": "prd-19",
+      "name": "Oranj Amonyaksiz Boya 9.0",
+      "description": "9.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 231,
+      "stock": 22,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "9.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "9.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-1-8/700/500"
+    },
+    {
+      "id": "prd-20",
+      "name": "Oranj Amonyaksiz Boya 10.0",
+      "description": "10.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 237,
+      "stock": 24,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "10.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "10.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-1-9/700/500"
+    },
+    {
+      "id": "prd-21",
+      "name": "Oranj Bitkisel Dogal Boya 1.0",
+      "description": "1.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 201,
+      "stock": 16,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "1.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "1.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-2-0/700/500"
+    },
+    {
+      "id": "prd-22",
+      "name": "Oranj Bitkisel Dogal Boya 2.0",
+      "description": "2.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 207,
+      "stock": 17,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "2.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "2.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-2-1/700/500"
+    },
+    {
+      "id": "prd-23",
+      "name": "Oranj Bitkisel Dogal Boya 3.0",
+      "description": "3.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 1000,
+      "stock": 18,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "3.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "3.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-2-2/700/500",
+      "oldPrice": 1000,
+      "discountPrice": 999,
+      "inDiscountSlider": true
+    },
+    {
+      "id": "prd-24",
+      "name": "Oranj Bitkisel Dogal Boya 4.0",
+      "description": "4.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 219,
+      "stock": 19,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "4.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "4.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-2-3/700/500"
+    },
+    {
+      "id": "prd-25",
+      "name": "Oranj Bitkisel Dogal Boya 5.0",
+      "description": "5.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 225,
+      "stock": 20,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "5.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "5.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-2-4/700/500"
+    },
+    {
+      "id": "prd-26",
+      "name": "Oranj Bitkisel Dogal Boya 6.0",
+      "description": "6.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 231,
+      "stock": 21,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "6.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "6.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-2-5/700/500"
+    },
+    {
+      "id": "prd-27",
+      "name": "Oranj Bitkisel Dogal Boya 7.0",
+      "description": "7.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 237,
+      "stock": 10,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "7.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "7.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-2-6/700/500"
+    },
+    {
+      "id": "prd-28",
+      "name": "Oranj Bitkisel Dogal Boya 8.0",
+      "description": "8.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 75,
+      "stock": 23,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "8.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "8.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-2-7/700/500"
+    },
+    {
+      "id": "prd-29",
+      "name": "Oranj Bitkisel Dogal Boya 9.0",
+      "description": "9.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 249,
+      "stock": 24,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "9.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "9.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-2-8/700/500"
+    },
+    {
+      "id": "prd-30",
+      "name": "Oranj Bitkisel Dogal Boya 10.0",
+      "description": "10.0 tonunda yuksek kapaticilik saglayan profesyonel sac boyasi.",
+      "price": 255,
+      "stock": 25,
+      "categoryId": "cat-hair-dye",
+      "variants": [
+        {
+          "code": "10.0",
+          "volume": "50 ml"
+        },
+        {
+          "code": "10.0",
+          "volume": "100 ml"
+        }
+      ],
+      "imageUrl": "https://picsum.photos/seed/oranj-2-9/700/500"
+    }
+  ],
+  "announcements": [
+    {
+      "id": "ann-d205eaed3b",
+      "title": "YAZ İNDİRİMİ",
+      "content": "indirim\n",
+      "inAnnouncementSlider": false,
+      "createdAt": "2026-06-22T13:47:47.394Z"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ord-995365d0e5",
+      "orderNumber": "SIP-20260622-115370",
+      "customerId": "usr-43a9b184fe",
+      "customerUsername": "semih",
+      "items": [
+        {
+          "productId": "prd-3",
+          "name": "Oranj Kalici Krem Boya 3.0",
+          "quantity": 1,
+          "unitPrice": 177
+        },
+        {
+          "productId": "prd-2",
+          "name": "Oranj Kalici Krem Boya 2.0",
+          "quantity": 1,
+          "unitPrice": 171
+        },
+        {
+          "productId": "prd-1",
+          "name": "Oranj Kalici Krem Boya 1.0",
+          "quantity": 1,
+          "unitPrice": 145
+        },
+        {
+          "productId": "prd-4",
+          "name": "Oranj Kalici Krem Boya 4.0",
+          "quantity": 1,
+          "unitPrice": 183
+        },
+        {
+          "productId": "prd-11",
+          "name": "Oranj Amonyaksiz Boya 1.0",
+          "quantity": 1,
+          "unitPrice": 50
+        },
+        {
+          "productId": "prd-12",
+          "name": "Oranj Amonyaksiz Boya 2.0",
+          "quantity": 1,
+          "unitPrice": 189
+        },
+        {
+          "productId": "prd-10",
+          "name": "Oranj Kalici Krem Boya 10.0",
+          "quantity": 1,
+          "unitPrice": 219
+        },
+        {
+          "productId": "prd-9",
+          "name": "Oranj Kalici Krem Boya 9.0",
+          "quantity": 1,
+          "unitPrice": 213
+        },
+        {
+          "productId": "prd-13",
+          "name": "Oranj Amonyaksiz Boya 3.0",
+          "quantity": 1,
+          "unitPrice": 195
+        },
+        {
+          "productId": "prd-14",
+          "name": "Oranj Amonyaksiz Boya 4.0",
+          "quantity": 1,
+          "unitPrice": 201
+        },
+        {
+          "productId": "prd-15",
+          "name": "Oranj Amonyaksiz Boya 5.0",
+          "quantity": 1,
+          "unitPrice": 207
+        },
+        {
+          "productId": "prd-16",
+          "name": "Oranj Amonyaksiz Boya 6.0",
+          "quantity": 1,
+          "unitPrice": 10
+        },
+        {
+          "productId": "prd-17",
+          "name": "Oranj Amonyaksiz Boya 7.0",
+          "quantity": 1,
+          "unitPrice": 219
+        },
+        {
+          "productId": "prd-18",
+          "name": "Oranj Amonyaksiz Boya 8.0",
+          "quantity": 1,
+          "unitPrice": 169.9
+        },
+        {
+          "productId": "prd-19",
+          "name": "Oranj Amonyaksiz Boya 9.0",
+          "quantity": 1,
+          "unitPrice": 231
+        }
+      ],
+      "totalPrice": 2579.9,
+      "shippingAddress": "sdewdefedferf",
+      "invoiceAddress": "trgvtrgtrvt5",
+      "payment": {
+        "method": "banka_karti",
+        "cardHolder": "semih kyk",
+        "maskedCardNumber": "**** **** **** 2432",
+        "expiry": "12/34"
+      },
+      "status": "Hazirlaniyor",
+      "trackingCode": "TRK37149443",
+      "createdAt": "2026-06-22T14:05:49.443Z"
+    },
+    {
+      "id": "ord-7601d09683",
+      "orderNumber": "SIP-20260622-255845",
+      "customerId": "usr-43a9b184fe",
+      "customerUsername": "semih",
+      "items": [
+        {
+          "productId": "prd-2",
+          "name": "Oranj Kalici Krem Boya 2.0",
+          "quantity": 1,
+          "unitPrice": 171
+        }
+      ],
+      "totalPrice": 171,
+      "shippingAddress": "sddsd",
+      "invoiceAddress": "sdsds",
+      "payment": {
+        "method": "banka_karti",
+        "cardHolder": "semih",
+        "maskedCardNumber": "**** **** **** 4123",
+        "expiry": "11/31"
+      },
+      "status": "Hazirlaniyor",
+      "trackingCode": "TRK36883344",
+      "createdAt": "2026-06-22T14:01:23.344Z"
+    },
+    {
+      "id": "ord-f5330b541a",
+      "orderNumber": "SIP-20260619-500938",
+      "customerId": "usr-admin",
+      "customerUsername": "admin",
+      "items": [
+        {
+          "productId": "prd-27",
+          "name": "Oranj Bitkisel Dogal Boya 7.0",
+          "quantity": 12,
+          "unitPrice": 237
+        }
+      ],
+      "totalPrice": 2844,
+      "shippingAddress": "sfuokjshgnısfukghsfugh",
+      "invoiceAddress": "muratı siktiğim yer",
+      "payment": {
+        "method": "kredi_karti",
+        "cardHolder": "jkaömdbfkjsd",
+        "maskedCardNumber": "**** **** **** 5315",
+        "expiry": "12/31"
+      },
+      "status": "Hazirlaniyor",
+      "trackingCode": "TRK93239421",
+      "createdAt": "2026-06-19T18:20:39.421Z"
+    },
+    {
+      "id": "ord-bc161fd553",
+      "orderNumber": "SIP-20260608-956197",
+      "customerId": "usr-admin",
+      "customerUsername": "admin",
+      "items": [
+        {
+          "productId": "prd-1",
+          "name": "Oranj Kalici Krem Boya 1.0",
+          "quantity": 8,
+          "unitPrice": 145
+        },
+        {
+          "productId": "prd-2",
+          "name": "Oranj Kalici Krem Boya 2.0",
+          "quantity": 1,
+          "unitPrice": 171
+        },
+        {
+          "productId": "prd-3",
+          "name": "Oranj Kalici Krem Boya 3.0",
+          "quantity": 1,
+          "unitPrice": 177
+        },
+        {
+          "productId": "prd-4",
+          "name": "Oranj Kalici Krem Boya 4.0",
+          "quantity": 1,
+          "unitPrice": 183
+        }
+      ],
+      "totalPrice": 1691,
+      "shippingAddress": "asdsadsadas",
+      "invoiceAddress": "sadsadas",
+      "payment": {
+        "method": "kredi_karti",
+        "cardHolder": "semih sik",
+        "maskedCardNumber": "**** **** **** 6464",
+        "expiry": "11/24"
+      },
+      "status": "Iptal",
+      "trackingCode": "TRK41719451",
+      "createdAt": "2026-06-08T18:01:59.451Z"
+    },
+    {
+      "id": "ord-87c83d0c0c",
+      "customerId": "usr-82bbf82168",
+      "customerUsername": "koll",
+      "items": [
+        {
+          "productId": "prd-1",
+          "name": "Oranj Kalici Krem Boya 1.0",
+          "quantity": 1,
+          "unitPrice": 165
+        },
+        {
+          "productId": "prd-2",
+          "name": "Oranj Kalici Krem Boya 2.0",
+          "quantity": 1,
+          "unitPrice": 171
+        },
+        {
+          "productId": "prd-7",
+          "name": "Oranj Kalici Krem Boya 7.0",
+          "quantity": 12,
+          "unitPrice": 201
+        }
+      ],
+      "totalPrice": 2748,
+      "shippingAddress": "ısgdvksfvkhsv",
+      "status": "Iptal",
+      "trackingCode": "TRK36069137",
+      "createdAt": "2026-06-08T16:27:49.137Z"
+    },
+    {
+      "id": "ord-4abd07f61b",
+      "customerId": "usr-82bbf82168",
+      "customerUsername": "koll",
+      "items": [
+        {
+          "productId": "prd-1",
+          "name": "Oranj Kalici Krem Boya 1.0",
+          "quantity": 1,
+          "unitPrice": 165
+        }
+      ],
+      "totalPrice": 165,
+      "shippingAddress": "a4m5ın",
+      "status": "Iptal",
+      "trackingCode": "TRK33642494",
+      "createdAt": "2026-06-08T15:47:22.494Z"
+    }
+  ],
+  "emails": [],
+  "forumPosts": [
+    {
+      "id": "frm-58ce56a24b",
+      "userId": "usr-43a9b184fe",
+      "username": "semih",
+      "productId": "prd-2",
+      "productName": "Oranj Kalici Krem Boya 2.0",
+      "rating": 1,
+      "comment": "2.0 boya istedim geldi",
+      "createdAt": "2026-06-22T14:01:36.826Z"
+    }
+  ],
+  "cmsSettings": {
+    "siteTitle": "Oranj Kozmetik",
+    "heroTitle": "Guzelligini Renklendir",
+    "heroSubtitle": "Profesyonel kozmetik urunleri ile guvenli alisveris deneyimi.",
+    "primaryColor": "#be185d",
+    "accentColor": "#fb7185",
+    "bannerImage": "https://picsum.photos/seed/oranj-banner/1200/400",
+    "updatedAt": "2026-06-08T15:44:30.249Z"
+  }
+}
