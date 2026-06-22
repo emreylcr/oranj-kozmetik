@@ -54,8 +54,8 @@ Bu proje kozmetik sirketi icin hazirlanmis, musteri paneli ve admin paneli icere
 ## Varsayilan Giris Bilgileri
 
 - Admin:
-  - kullanici adi: `admin`
-  - sifre: `admin123`
+  - kullanici adi: 
+  - sifre: 
 
 ## Veri Yapisi
 
